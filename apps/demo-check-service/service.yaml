@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo-check-service
+  labels:
+    app: demo-check-service
+    app.kubernetes.io/name: demo-check-service
+spec:
+  type: ClusterIP
+  selector:
+    app: demo-check-service
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
