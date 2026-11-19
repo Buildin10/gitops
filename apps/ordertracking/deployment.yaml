@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ordertracking
+  labels:
+    app: ordertracking
+    app.kubernetes.io/name: ordertracking
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ordertracking
+  template:
+    metadata:
+      labels:
+        app: ordertracking
+        app.kubernetes.io/name: ordertracking
+    spec:
+      containers:
+        - name: ordertracking
+          image: ghcr.io/buildin10/ordertracking:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
